@@ -18,7 +18,7 @@ for i in prime:
         if j%i == 0:
             # print(j, prime.index(j))
             prime.remove(j)
-# print(prime)
+print(prime)
 
 testCase = int(sys.stdin.readline().split()[0])
 
