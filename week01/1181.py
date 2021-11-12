@@ -31,3 +31,11 @@ for i in range(max+1):
             # for deduplication
             elif ls[j-1] != ls[j]:
                 print(ls[j])
+
+
+# ls=list(set(ls))
+#
+# ls.sort()
+# ls.sort(key=len)
+#
+# print(ls)

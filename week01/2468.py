@@ -8,7 +8,7 @@
 '''
 import copy
 
-import sys
+
 
 # def safe(data, minus ):
 #     print(minus)
@@ -31,50 +31,68 @@ import sys
 #                 return 0
 #             else:
 
+import sys
 from collections import deque
 
-def bfs(a,b,h):
-    dx=[1,-1,0,0]
-    dy=[0,0,1,-1]
+input = sys.stdin.readline
 
+# bfs
+def bfs(x, y, safe_area):
+    # make queue
     queue = deque()
-    queue.append((a,b))
+    # put start point
+    queue.append((x, y))
+    # put visited start point
+    visited[x][y] = 1
 
     while queue:
+        # queue pop
         x, y = queue.popleft()
+
+        # check adjacent point(left, right, up, down)
         for i in range(4):
             nx = x + dx[i]
             ny = y + dy[i]
 
-            if nx < 0 or nx >=n or ny <0 or ny >=n:
-                continue
-            elif copy[nx][ny] == 1:
-                copy[nx][ny] = 0
-                queue.append((nx,ny))
+            # if nx, ny are in square
+            if 0 <= nx < N and 0 <= ny < N:
+                # if safe, not visited
+                if graph[nx][ny] >= safe_area and visited[nx][ny] == 0:
+                    # check visited
+                    visited[nx][ny] = 1
+                    # put queue
+                    queue.append((nx, ny))
 
-n = int(input())
-graph = []
-for i in  range(n):
-    graph.append(list(map(int, input().split())))
 
-result = []
+# input n and data
+N = int(input())
+graph = [list(map(int, input().split())) for _ in range(N)]
 
-# water height
-for k in range(101):
-    copy = [ [0] * n for _ in range(n)]
-    cnt = 0
+graph_min = min(map(min, graph))
+graph_max = max(map(max, graph))
 
-    for i in range(n):
-        for j in range(n):
-            if graph[i][j] > k:
-                copy[i][j] = 1
+# for adjacent
+dx = [-1, 1, 0, 0]
+dy = [0, 0, -1, 1]
 
-    for i in range(n):
-        for j in range(n):
-            if copy[i][j] == 1:
-                copy[i][j] =0
-                bfs(i,j,k)
-                cnt +=1
+# why?
+# max_safe_area = graph_min
+max_safe_area = 0
 
-    result.append(cnt)
-print(max(result))
+# for all case by safe
+for safe_area in range(graph_min, graph_max+1):
+    # initialize visited
+    visited = [[0] * N for _ in range(N)]
+    # for check area
+    temp = 0
+    # check all point
+    for i in range(N):
+        for j in range(N):
+            # if safe and not visited
+            if graph[i][j] >= safe_area and visited[i][j] == 0:
+                bfs(i,j,safe_area)
+                temp+=1
+
+    if temp > max_safe_area:
+        max_safe_area = temp
+print(max_safe_area)

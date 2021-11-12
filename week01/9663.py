@@ -41,7 +41,7 @@ def set (i, n) :
             if i == n-1:
                 # put(n)
                 cnt = cnt +1
-                # print(pos)
+                print(pos)
 
             # i != n-1 is not last column
             else:

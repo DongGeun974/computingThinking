@@ -65,40 +65,39 @@
 #     print( case[-1],0, data[case[-1]][0])
 #     print(sum + int(data[case[-1]][0]))
 
-
-import itertools
 import sys
 
-def find_path(depth, start, stop, case):
+# dfs
+def dfs(start, next, value, visited):
+    global min_value
 
-    if depth == n-2:
-        # print(start, stop, data[start][stop])
-        if int(data[start][stop]) == 0 :
-            return float('inf')
-        else:
-            return int(data[start][stop])
-    else:
-        # print(start, stop, data[start][stop])
-        if int(data[start][stop]) == 0 :
-            return find_path(depth+1, case[depth],case[depth+1], case) +float('inf')
-        else:
-            return find_path(depth+1, case[depth],case[depth+1], case) + int(data[start][stop])
+    # all visited and travel[last][start] !=0
+    # return
+    if len(visited) == N:
+        if travel[next][start] != 0:
+            min_value = min(min_value, value+ travel[next][start])
+        return
+
+    # not all visited, visit all other city
+    for i in range(N):
+        # check visited
+        if travel[next][i] != 0 and \
+                i != start and \
+                i not in visited:
+            # input visited
+            visited.append(i)
+            dfs(start, i, value + travel[next][i], visited)
+            # reach last, all pop visited
+            visited.pop()
 
 
-n = int(sys.stdin.readline().split()[0])
-ls = []
-for i in range(1, n):
-    ls.append(i)
-data = [sys.stdin.readline().split() for i in range(n)]
-all_case = itertools.permutations(ls)
+N = int(sys.stdin.readline().split()[0])
+travel = [list(map(int, sys.stdin.readline().split())) for _ in range(N)]
 
-answer = float('inf')
+min_value = float('inf')
 
-for case in all_case:
-    # print()
-    sum = find_path(0,0,case[0], case) + int(data[case[-1]][0])
-    # print( case[-1],0, data[case[-1]][0])
-    if sum < answer : answer = sum
-    # print(sum)
+# start 0~n-1
+for i in range(N):
+    dfs(i, i, 0, [i])
 
-print(answer)
+print(min_value)
