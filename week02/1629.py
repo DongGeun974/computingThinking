@@ -15,7 +15,17 @@ a, b, c = map(int, sys.stdin.readline().split())
 # define function
 def multiple(a, b, c):
     if b ==1:
+        # print('b==1', a%c)
         return a%c
-    return (a*(multiple(a, b//2, c)))%c
+
+    # wrong answer
+    # return (a*(multiple(a, b//2, c)))%c
+
+    if b % 2 == 0:
+        left = multiple(a,b//2,c)
+        return left*left%c
+    else:
+        left = multiple(a, b//2, c)
+        return left*left*a%c
 
 print(multiple(a,b,c))
