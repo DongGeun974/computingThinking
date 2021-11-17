@@ -44,44 +44,109 @@
 # answer+=temp
 # print(answer)
 
-s = input()
+# index error
+# import sys
+#
+# n = list(sys.stdin.readline().split()[0])
+# stack = []
+# answer = 0
+# for i in n:
+#     if i == '(' or i == '[':
+#         stack.append(i)
+#     else:
+#         if stack and i == ')' and (stack[-1] == '(' or str(stack[-1]).isdigit()):
+#             temp = stack.pop()
+#             if temp == '(':
+#                 stack.append(2)
+#             else:
+#                 while str(stack[-1]).isdigit():
+#                     temp+=stack.pop()
+#                 if stack[-1] == '(':
+#                     stack.pop()
+#                     stack.append(temp*2)
+#                 else:
+#                     print(0)
+#                     exit()
+#
+#         elif stack and i == ']' and (stack[-1] == '[' or str(stack[-1]).isdigit()):
+#             temp = stack.pop()
+#             if temp == '[':
+#                 stack.append(3)
+#             else:
+#                 while str(stack[-1]).isdigit():
+#                     temp += stack.pop()
+#                 if stack[-1] == '[':
+#                     stack.pop()
+#                     stack.append(temp * 3)
+#                 else:
+#                     print(0)
+#                     exit()
+#         else:
+#             print(0)
+#             exit()
+#         # print(stack)
+#         temp = 0
+#         while stack and str(stack[-1]).isdigit():
+#             temp += stack.pop()
+#         if temp:
+#             stack.append(temp)
+#
+# if stack and str(stack[0]).isdigit():
+#     print(*stack)
+# else:
+#     print(0)
+
+s= input()
 stack = []
-for i in s:
-    if i in ['(', '[']:
-        stack.append(i)
+answer = 0
+
+for x in s:
+    if x == ')':
+        temp = 0
+        if len(stack) == 0:
+            print(0)
+            exit()
+        while len(stack)!=0:
+            top = stack.pop()
+            if top=='[':
+                print(0)
+                exit()
+            elif top =='(':
+                if temp == 0:
+                    stack.append(2)
+                else:
+                    stack.append(2*temp)
+                break
+            else:
+                temp += top
+
+    elif x == ']':
+        temp = 0
+        if len(stack) == 0:
+            print(0)
+            exit()
+        while len(stack) != 0:
+            top = stack.pop()
+            if top == '(':
+                print(0)
+                exit()
+            elif top == '[':
+                if temp == 0:
+                    stack.append(3)
+                else:
+                    stack.append(3 * temp)
+                break
+            else:
+                temp += top
+
     else:
-        if stack and i == ')':
-            if len(stack) > 1 and str(stack[-1]).isdigit():
-                n = stack.pop() * 2
-                stack.pop()
-                stack.append(n)
-            elif stack[-1] == '(':
-                stack.pop()
-                stack.append(2)
-            else:
-                stack.append('-')
-                break
+        stack.append(x)
 
-        elif stack and i == ']':
-            if len(stack) > 1 and str(stack[-1]).isdigit():
-                n = stack.pop() * 3
-                stack.pop()
-                stack.append(n)
-            elif stack[-1] == '[':
-                stack.pop()
-                stack.append(3)
-            else:
-                stack.append('-')
-                break
+for i in stack:
+    if i == '(' or i =='[':
+        print(0)
+        exit()
+    else:
+        answer+=i
 
-        else:
-            stack.append('-')
-            break
-    if len(stack) > 1 and str(stack[-1]).isdigit() and str(stack[-2]).isdigit():
-        stack.append(stack.pop() + stack.pop())
-    # print(stack)
-
-if len(stack) == 1 and str(stack[-1]).isdigit():
-    print(stack.pop())
-else:
-    print(0)
+print(answer)

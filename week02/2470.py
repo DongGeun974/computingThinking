@@ -6,6 +6,7 @@
 @Author ： Hwang
 @Date ：2021-11-13 오후 7:04 
 '''
+
 # time over
 # import copy
 # import sys
@@ -39,29 +40,64 @@
 # print(*sorted([l1, l2]))
 
 # input and sort
-import sys
 
-n = int(sys.stdin.readline().split()[0])
-data = sorted(list(map(int, sys.stdin.readline().split())))
+# import sys
+#
+# n = int(sys.stdin.readline().split()[0])
+# data = sorted(list(map(int, sys.stdin.readline().split())))
+#
+# # minimum
+# answer = float('inf')
+#
+# for i in range(len(data)-1):
+#     start = i+1
+#     end = n-1
+#
+#     # binary search
+#     while start <= end:
+#         mid = (start + end) // 2
+#         temp = data[i] + data[mid]
+#
+#         if abs(temp)  < answer:
+#             idx1, idx2 , answer = i, mid, abs(temp)
+#         if temp < 0:
+#             start=mid+1
+#         else:
+#             end=mid-1
+#
+#
+# print(data[idx1], data[idx2])
+#
 
-# minimum
-answer = float('inf')
 
-for i in range(len(data)-1):
+
+
+
+
+
+n = int(input())
+arr = sorted(list(map(int,input().split())))
+max_min = float('inf')
+idx1, idx2 = 0,0
+# print(arr)
+for i in range(n-1):
     start = i+1
-    end = n-1
+    end = len(arr)-1
 
-    # binary search
     while start <= end:
-        mid = (start + end) // 2
-        temp = data[i] + data[mid]
+        mid = (start+end)//2
+        tem = arr[mid] + arr[i]
+        # print('i', i)
+        # print('mid', mid)
 
-        if abs(temp)  < answer:
-            idx1, idx2 , answer = i, mid, abs(temp)
-        if temp < 0:
-            start=mid+1
+        if abs(tem) < max_min:
+            idx1, idx2, max_min = i, mid, abs(tem)
+            # print('result : ', i, mid)
+
+        if tem > 0:
+            end = mid-1
         else:
-            end=mid-1
+            start=mid+1
 
+print(arr[idx1], arr[idx2])
 
-print(data[idx1], data[idx2])

@@ -96,50 +96,109 @@ import sys
 #
 # print(binarySearch(data,0,len(data)-1))
 
+
+# import sys
+#
+# n = int(sys.stdin.readline().split()[0])
+# sorted_location = []
+# for _ in range(n):
+#     x, y = list(map(int, sys.stdin.readline().split()))
+#     sorted_location.append((x,y))
+# sorted_location.sort()
+#
+# def get_dist(a,b):
+#     return (a[0] - b[0]) ** 2 + (a[1] -b[1]) ** 2
+#
+# def solution(l,r):
+#     # 점이 하나면 제일 큰 값 리턴
+#     if l == r:
+#         return float('inf')
+#
+#     else:
+#         m = (l+r)//2
+#         min_dist = min(solution(l,m), solution(m+1, r))
+#         target_list = []
+#
+#         # x축 기준, 가운데 점에서 왼쪽에 있는 점들 중 최소 거리 값
+#         for i in range(m,l-1,-1):
+#             # 가운점 점에서부터 왼쪽으로 멀어짐
+#             if (sorted_location[i][0] - sorted_location[m][0]) ** 2 < min_dist:
+#                 target_list.append(sorted_location[i])
+#             # 최소거리보다 큰 점들는 패스
+#             else:
+#                 break
+#
+#         # x축 기준, 가운데 점에서 오른쪽에 있는 점들 중 최소 거리 값
+#         for i in range(m+1, r+1):
+#             # 가운데 점에서부터 오른쪽으로 멀어짐
+#             if (sorted_location[i][0] - sorted_location[m][0]) ** 2 < min_dist:
+#                 target_list.append(sorted_location[i])
+#             # 최소거리보다 큰 점들은 패스
+#             else:
+#                 break
+#
+#         # y축 정렬
+#         target_list.sort(key=lambda x:x[1])
+#         print(target_list)
+#         # 완전탐색
+#         for i in range(len(target_list) -1):
+#             for j in range(i+1, len(target_list)):
+#                 # y축 기준, 제일 밑에 있는 점부터 확인
+#                 if (target_list[i][1] - target_list[j][1]) ** 2 < min_dist:
+#                     print('target : ', target_list[i], target_list[j])
+#                     dist = get_dist(target_list[i], target_list[j])
+#                     min_dist = min(min_dist, dist)
+#                 else:
+#                     break
+#
+#         return min_dist
+#
+# if len(sorted_location) != len(set(sorted_location)):
+#     print(0)
+# else:
+#     print(solution(0, len(sorted_location)-1))
+
 import sys
 
-n = int(sys.stdin.readline().split()[0])
-sorted_location = []
-for _ in range(n):
-    x, y = list(map(int, sys.stdin.readline().split()))
-    sorted_location.append((x,y))
-sorted_location.sort()
+n = int(sys.stdin.readline())
+arr = list(list(map(int, sys.stdin.readline().split())) for _ in range(n))
+# arr = sorted(sorted(arr,key=lambda x:x[1]), key=lambda x:x[0])
+# arr.sort(key = lambda x: x[1])
+arr.sort()
 
-def get_dist(a,b):
-    return (a[0] - b[0]) ** 2 + (a[1] -b[1]) ** 2
 
-def solution(l,r):
-    if l == r:
+def get_distance(p1, p2):
+    return (p1[0] - p2[0]) ** 2 + (p1[1] - p2[1]) ** 2
+
+def divide_conquer(arr, start, end):
+    if start==end:
         return float('inf')
     else:
-        m = (l+r)//2
-        min_dist = min(solution(l,m), solution(m+1, r))
-        target_list = []
+        mid = (start+end) //2
 
-        for i in range(m,l-1,-1):
-            if (sorted_location[i][0] - sorted_location[m][0]) ** 2 < min_dist:
-                target_list.append(sorted_location[i])
+        min_dist = min(divide_conquer(arr, start,mid), divide_conquer(arr,mid+1, end))
+        candidate = []
+        for i in range(mid, start-1, -1):
+            if (arr[i][0] - arr[mid][0]) ** 2 < min_dist:
+                candidate.append(arr[i])
             else:
                 break
-        for i in range(m+1, r+1):
-            if (sorted_location[i][0] - sorted_location[m][0]) ** 2 < min_dist:
-                target_list.append(sorted_location[i])
+        for i in range(mid+1, end+1):
+            if (arr[i][0] - arr[mid][0]) ** 2 < min_dist:
+                candidate.append(arr[i])
             else:
                 break
 
-        target_list.sort(key=lambda x:x[1])
-
-        for i in range(len(target_list) -1):
-            for j in range(i+1, len(target_list)):
-                if (target_list[i][1] - target_list[j][1]) ** 2 < min_dist:
-                    dist = get_dist(target_list[i], target_list[j])
-                    min_dist = min(min_dist, dist)
+        # print(candidate)
+        candidate.sort(key=lambda x:x[1])
+        for i in range(len(candidate)-1):
+            for j in range(i+1, len(candidate)):
+                if (candidate[i][1] - candidate[j][1]) ** 2 < min_dist:
+                    # print('distacne : ',candidate[i], candidate[j])
+                    min_dist = min(min_dist, get_distance(candidate[i], candidate[j]))
                 else:
                     break
 
         return min_dist
 
-if len(sorted_location) != len(set(sorted_location)):
-    print(0)
-else:
-    print(solution(0, len(sorted_location)-1))
+print(divide_conquer(arr, 0, len(arr)-1))
