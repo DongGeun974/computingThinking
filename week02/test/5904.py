@@ -106,8 +106,8 @@ def divideAndConquer(k, l, n):
         return divideAndConquer(k, l , n)
     elif n == l+1:
         return 'm'
-    elif n >= l+3+k:
-        return divideAndConquer(k,l, n - l - 3-k)
+    elif n > l+4+k:
+        return divideAndConquer(k,l, n - l - 4-k)
     else:
         return 'o'
 
