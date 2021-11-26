@@ -6,6 +6,10 @@
 @Author ： Hwang
 @Date ：2021-11-25 오전 10:38 
 '''
+
+import sys
+from collections import deque
+
 """
     최대 중량 찾기
     
@@ -15,53 +19,45 @@
     사냥꾼 : decision algorithm
     그래프 탐색을 하면서 찾음
 """
-import sys
-from collections import deque
 
-n, m = map(int, sys.stdin.readline().split())
-# arr = [[float('inf')]*(n+1) for _ in range(n+1)]
-arr = [[0]*(n+1) for _ in range(n+1)]
+n,m = map(int, sys.stdin.readline().split())
+graph = [[] for _ in range(n+1)]
+
 for _ in range(m):
-    a, b, cost = map(int, sys.stdin.readline().split())
-    arr[a][b] = cost # if arr[a][b] > cost else arr[a][b]
-    arr[b][a] = cost # if arr[b][a] > cost else arr[b][a]
+    start, end, weight = map(int, sys.stdin.readline().split())
+    graph[start].append([end, weight])
+    graph[end].append([start, weight])
 
-fact1, fact2 = map(int, sys.stdin.readline().split())
+start_island, end_island = map(int, sys.stdin.readline().split())
 
+min_weight , max_weight = 1, 10000000000
 
-# def dfs(start, end, max_cost):
-#     print(start, end, max_cost)
-#     if start == end :
-#         return max_cost
-#     for i in range(len(arr[start])):
-#         if arr[start][i] != 0:
-#             max_cost = min(max_cost, arr[start][i])
-#             arr[start][i] = arr[i][start] = 0
-#             dfs(i, end, max_cost)
-#
-# print(dfs(fact1,fact2,float('inf')))
+def bfs(mid_weight): # 3
+    queue = deque()
+    queue.append(start_island)
+    visited = set()
+    visited.add(start_island)
 
-def bfs(v):
-    max_cost = float('inf')
-    q = deque()
-    visited = []
-    q.append(v)
-    visited.append(v)
+    while queue:
+        start = queue.popleft()
+        for end, weight in graph[start]:
+            if end not in visited and weight >= mid_weight:
+                visited.add(end)
+                queue.append(end)
 
-    while q:
-        now = q.popleft()
-        print(now)
+    if end_island in visited:
+        return True
+    else:
+        return False
 
-        candidate = []
-        for i in range(len(arr[now])):
-            if i not in visited and arr[now][i] != 0:
-                candidate.append(i)
-        candidate.sort()
+result = min_weight
 
-        if candidate:
-            max_cost = min(max_cost,arr[now][candidate[-1]])
-            print(max_cost)
-            q.append(candidate[-1])
-            visited.append(candidate[-1])
+while min_weight <= max_weight:
+    mid_weight = (min_weight + max_weight)//2
+    if bfs(mid_weight): # 3
+        result = mid_weight
+        min_weight = mid_weight+1
+    else:
+        max_weight = mid_weight-1
 
-bfs(fact1)
+print(result)
