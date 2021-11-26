@@ -6,6 +6,7 @@
 @Author ： Hwang
 @Date ：2021-11-25 오후 10:59 
 '''
+
 import sys
 
 n, k = map(int, sys.stdin.readline().split())
@@ -22,15 +23,15 @@ for i in range(1, n+1):
         v=arr[i][1]
 
         if j < w:
-            print(j, w)
+            # print(j, w)
             matrix[i][j] = matrix[i-1][j]
         else:
-            print(j, i-1, j-w, v )
-            print(matrix[i-1][j], matrix[i-1][j-w]+v)
+            # print(j, i-1, j-w, v )
+            # print(matrix[i-1][j], matrix[i-1][j-w]+v)
             matrix[i][j] = max(matrix[i-1][j], matrix[i-1][j-w]+v)
 
-        for _ in matrix:
-            print(_)
-        print()
-    print()
+    #     for _ in matrix:
+    #         print(_)
+    #     print()
+    # print()
 print(matrix[n][k])
