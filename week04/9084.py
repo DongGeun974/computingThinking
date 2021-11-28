@@ -7,24 +7,39 @@
 @Date ：2021-11-25 오후 8:15 
 '''
 
+# import sys
+#
+# testCase = int(sys.stdin.readline())
+#
+# for _ in range(testCase):
+#     num_coin = int(sys.stdin.readline())
+#     arr_coin = list(map(int, sys.stdin.readline().split()))
+#     count = int(sys.stdin.readline())
+#
+#     dp = [0] * (count+1)
+#     dp[0] = 1
+#
+#     # print(list(range(count+1)))
+#     for i in range(num_coin):
+#         # print(dp)
+#         for j in range(1, count+1):
+#             # print(j,arr_coin[i])
+#             if j - arr_coin[i] >= 0:
+#                 dp[j] += dp[j-arr_coin[i]]
+#     # print(dp)
+#     print(dp[count])
+
 import sys
 
-testCase = int(sys.stdin.readline())
+for _ in range(int(sys.stdin.readline())):
+    n = int(sys.stdin.readline())
+    coins = sorted(list(map(int, sys.stdin.readline().split())))
+    k = int(sys.stdin.readline())
 
-for _ in range(testCase):
-    num_coin = int(sys.stdin.readline())
-    arr_coin = list(map(int, sys.stdin.readline().split()))
-    count = int(sys.stdin.readline())
+    dp = [0] * (k+1)
+    dp[0] =1
 
-    dp = [0] * (count+1)
-    dp[0] = 1
-
-    # print(list(range(count+1)))
-    for i in range(num_coin):
-        # print(dp)
-        for j in range(1, count+1):
-            # print(j,arr_coin[i])
-            if j - arr_coin[i] >= 0:
-                dp[j] += dp[j-arr_coin[i]]
-    # print(dp)
-    print(dp[count])
+    for coin in coins:
+        for i in range(1, k+1):
+            if i >= coin: dp[i] += dp[i-coin]
+    print(dp[k])
