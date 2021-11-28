@@ -29,19 +29,29 @@
 # print(dp(n))
 
 
+# import sys
+#
+# n = int(sys.stdin.readline())
+# if n == 1 or n == 2:
+#     print(1)
+#     exit()
+#
+# memo = [0] * (n+1)
+#
+# memo[1] = memo[2] =1
+#
+# for i in range(3, n+1):
+#     memo[i] = memo[i-1] + memo[i-2]
+#     # print(memo)
+#
+# print(memo[n])
+
+
 import sys
 
 n = int(sys.stdin.readline())
-if n == 1 or n == 2:
-    print(1)
-    exit()
-
-memo = [0] * (n+1)
-
-memo[1] = memo[2] =1
-
-for i in range(3, n+1):
-    memo[i] = memo[i-1] + memo[i-2]
-    # print(memo)
-
-print(memo[n])
+fino = [0] * (n+1)
+fino[1] = 1
+for i in range(2,n+1):
+    fino[i] = fino[i-2] + fino[i-1]
+print(fino[n])
