@@ -23,5 +23,5 @@ dp[1] = max(step[0] + step[1], step[1])
 dp[2] = max(step[0] + step [2], step[1] + step[2])
 for i in range(3, n):
     dp[i] = max(dp[i-2] + step[i], dp[i-3] + step[i] + step[i-1])
-
+print(dp)
 print(dp[n-1])
