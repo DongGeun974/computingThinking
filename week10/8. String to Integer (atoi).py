@@ -7,32 +7,39 @@
 @Date ：2022-01-10 오후 10:01 
 '''
 
+
 class Solution:
     def myAtoi(self, s: str) -> int:
-        flag = False
-        array = []
-        for i in s:
-            if i == '-':
-                flag = True
-            elif i.isdigit():
-                array.append(i)
-            elif i.isalpha():
-                break
+        # 32 bit signed integer,
+        INT_MIN = -(2 ** 31)
+        INT_MAX = (2 ** 31) - 1
 
-        if not array:
-            return 0
+        # First, remove white space
+        s = s.strip()
 
-        num = int("".join(array))
+        # Second,
+        first = None
+        for character in s:
+            if not first:
+                if character.isdigit() or character in {'-', '+'}:
+                    first = character  # Number or '-' or '+'
+                else:  # no valid first character(not digit,not sign)
+                    break
+            else:
+                if character.isdigit():
+                    first += character
+                else:  # not digit
+                    break
 
-        if flag:
-            num = -num
+        if not first or first in {'-', '+'}:
+            first = 0
+        elif int(first) < INT_MIN:
+            first = INT_MIN
+        elif int(first) > INT_MAX:
+            first = INT_MAX
 
-        if -pow(2,31) > num:
-            num = 2 ** 31 * -1
-        if num >pow(2, 31)-1:
-            num = 2 ** 31 -1
+        return int(first)
 
-        return num
 
 s = Solution()
-print(s.myAtoi("-91283472332"))
+print(s.myAtoi("+-12"))
